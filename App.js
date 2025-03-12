@@ -1,9 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import StartupScreen from './src/screens/StartupScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import SearchScreen from './src/screens/SearchScreen';
+import RecipeDetailScreen from './src/screens/RecipeDetailScreen';
+import BackButton from './src/components/BackButton';
 import Entypo from '@expo/vector-icons/Entypo';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
+
+const Stack = createNativeStackNavigator();
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -13,6 +21,14 @@ SplashScreen.setOptions({
 	duration: 1000,
 	fade: true,
 });
+
+const theme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		background: '#ffffff',
+	},
+};
 
 export default function App() {
 	const [appIsReady, setAppIsReady] = useState(false);
@@ -52,19 +68,45 @@ export default function App() {
 	}
 
 	return (
-		<View style={styles.container} onLayout={onLayoutRootView}>
-			<Text>SplashScreen Demo! 👋</Text>
-			<Entypo name='rocket' size={30} />
+		<NavigationContainer theme={theme} onReady={onLayoutRootView}>
+			<Stack.Navigator
+				screenOptions={{
+					headerTitleAlign: 'center',
+					headerShadowVisible: false,
+				}}
+			>
+				<Stack.Screen
+					name='StartupScreen'
+					component={StartupScreen}
+					options={{ headerShown: false }}
+				/>
+				<Stack.Screen
+					name='HomeScreen'
+					component={HomeScreen}
+					options={{
+						title: 'Home',
+						headerBackVisible: false,
+						gestureEnabled: false,
+					}}
+				/>
+				<Stack.Screen
+					name='SearchScreen'
+					component={SearchScreen}
+					options={{
+						title: 'Search Recipes',
+						headerLeft: (props) => <BackButton {...props} />,
+					}}
+				/>
+				<Stack.Screen
+					name='RecipeDetailScreen'
+					component={RecipeDetailScreen}
+					options={{
+						title: 'Recipe Info',
+						headerLeft: (props) => <BackButton {...props} />,
+					}}
+				/>
+			</Stack.Navigator>
 			<StatusBar style='auto' />
-		</View>
+		</NavigationContainer>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
