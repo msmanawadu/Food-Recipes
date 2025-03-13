@@ -94,7 +94,7 @@ export default function App() {
 					component={SearchScreen}
 					options={{
 						title: 'Search Recipes',
-						headerLeft: (props) => <BackButton {...props} />,
+						headerLeft: () => <BackButton />,
 					}}
 				/>
 				<Stack.Screen
@@ -102,7 +102,7 @@ export default function App() {
 					component={RecipeDetailScreen}
 					options={{
 						title: 'Recipe Info',
-						headerLeft: (props) => <BackButton {...props} />,
+						headerLeft: () => <BackButton />,
 					}}
 				/>
 			</Stack.Navigator>

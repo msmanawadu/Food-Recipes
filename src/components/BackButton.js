@@ -1,8 +1,15 @@
 import { StyleSheet, Pressable, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-function BackButton(props) {
+function BackButton() {
+	const navigation = useNavigation();
+
 	return (
-		<Pressable onPress={props.onPress}>
+		<Pressable
+			onPress={() => {
+				navigation.goBack();
+			}}
+		>
 			<Image
 				style={styles.backButton}
 				source={require('../../assets/images/backButton.png')}
